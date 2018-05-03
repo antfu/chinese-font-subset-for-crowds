@@ -3,7 +3,7 @@ import re
 import os
 import subprocess
 
-text_source = './crowds/index.zh-CN.html'
+text_source = './crowds/zh-CN.html'
 unicodes_output = './unicodes.txt'
 font_source = './Xiongtuti.ttf'
 font_output = './crowds/css/Xiongtuti-Subset.ttf'
