@@ -2,11 +2,7 @@ import codecs
 import re
 import os
 import subprocess
-
-text_source = './crowds/zh-CN.html'
-unicodes_output = './unicodes.txt'
-font_source = './Xiongtuti.ttf'
-font_output = './crowds/css/Xiongtuti-Subset.ttf'
+import config
 
 LHan = [[0x2E80, 0x2E99],    # Han # So  [26] CJK RADICAL REPEAT, CJK RADICAL RAP
         [0x2E9B, 0x2EF3],    # Han # So  [89] CJK RADICAL CHOKE, CJK RADICAL C-SIMPLIFIED TURTLE
@@ -45,7 +41,7 @@ def build_re():
   return re.compile(RE, re.UNICODE)
 
 def generate_unicodes():
-  with codecs.open(text_source, encoding='utf-8', mode='r') as src:
+  with codecs.open(config.text_source, encoding='utf-8', mode='r') as src:
     content = src.read()
     words = set([])
     RE = build_re()
@@ -53,13 +49,14 @@ def generate_unicodes():
       words.add(n)
 
     unicodes = '\n'.join(['U+%04x' % ord(c) for c in list(words)])
-    with codecs.open(unicodes_output, encoding='utf-8', mode='w+') as out:
+    with codecs.open(config.unicodes_output, encoding='utf-8', mode='w+') as out:
       out.write(unicodes)
 
-def run_shell():
-  command = 'pyftsubset "{font_source}" --unicodes-file="{unicodes_output}" --output-file="{font_output}"'.format(font_source=font_source, unicodes_output=unicodes_output, font_output=font_output)
+def subset(font_source, unicodes_output, font_output):
+  command = f'{config.pyftsubset} "{font_source}" --unicodes-file="{unicodes_output}" --output-file="{font_output}"'
   print('\n\n', command, '\n\n')
-  subprocess.Popen(command, shell=True)
+  subprocess.Popen(command, shell=True).wait()
+
 
 generate_unicodes()
-run_shell()
+subset(config.font_source, config.unicodes_output, config.font_output)

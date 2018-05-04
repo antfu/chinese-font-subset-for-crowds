@@ -10,8 +10,9 @@ The basic technique is to extract all the Chinese characters appears in `zh-CN.h
 Requirement
 - Python 3+
 
-After update the submodule `crowds` then
-
+1. Update the submodule `crowds`
+2. Edit the [`config.py`]('/config.py') file
+3. Install `fontstool` library
 ```
 pip install -r pip-requirement.txt
 ```
